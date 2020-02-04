@@ -61,6 +61,9 @@ def construct():
   lvs          = Step( 'mentor-calibre-lvs',            default=True )
   debugcalibre = Step( 'cadence-innovus-debug-calibre', default=True )
 
+  sdfargs      = Step( 'synopsys-vcs-sdf',              default=True )
+  gatesim      = Step( 'synopsys-vcs-sim',              default=True )
+
   #-----------------------------------------------------------------------
   # Graph -- Add nodes
   #-----------------------------------------------------------------------
@@ -76,12 +79,19 @@ def construct():
   g.add_step( drc          )
   g.add_step( lvs          )
   g.add_step( debugcalibre )
+  g.add_step( sdfargs      )
+  g.add_step( gatesim      )
 
   #-----------------------------------------------------------------------
   # Graph -- Add edges
   #-----------------------------------------------------------------------
 
   # Connect by name
+
+  g.connect_by_name( placeroute,  sdfargs      )
+  g.connect_by_name( sdfargs,     gatesim      )
+  g.connect_by_name( placeroute,  gatesim      )
+  g.connect_by_name( adk,         gatesim      )
 
   g.connect_by_name( rtl,         dc           )
   g.connect_by_name( adk,         dc           )

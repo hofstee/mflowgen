@@ -1,0 +1,39 @@
+#=========================================================================
+# Synopsys VCS -- Generic VCS Simulation
+#=========================================================================
+
+name: synopsys-vcs-sim
+
+#-------------------------------------------------------------------------
+# Inputs and Outputs
+#-------------------------------------------------------------------------
+
+inputs:
+  - adk
+  - design.vcs.v
+  - testbench.v
+  - design.sdf
+  - sdf_args.txt
+
+outputs:
+  - design.vpd
+
+#-------------------------------------------------------------------------
+# Commands
+#-------------------------------------------------------------------------
+
+commands:
+  - |
+    vcs -R -sverilog -top $design_name inputs/design.vcs.v \
+        inputs/adk/stdcells.v \
+        -timescale=1ns/1ns \
+        +vcs+dumpvars+outputs/design.vpd \
+        $(cat inputs/sdf_args.txt)
+
+#-------------------------------------------------------------------------
+# Parameters
+#-------------------------------------------------------------------------
+
+parameters:
+  clock_period: 1.0
+  design_name: undefined
